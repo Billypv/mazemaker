@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 import random
 
 
@@ -46,7 +47,7 @@ def create_maze(size):
     current_node =(random.randint(0,size - 1),random.randint(0,size - 1))
     visited_nodes ={current_node}
     frontier = frontier_generation(current_node,size,set(),visited_nodes)
-    while len(visited_nodes) < size ** 2:
+    while frontier:
         new_node = random.choice(sorted(frontier))
         if (new_node[0]+1, new_node[1]) in visited_nodes:
             maze[new_node[0]][new_node[1]]["up"] = True;
@@ -67,9 +68,18 @@ def create_maze(size):
     return maze
 
 def print_maze(maze):
-    size = len(maze)
-    for i in range(0, size):
-        for j in range(0,size):
-            return
+    for i, j in maze:
+        walls, _ = maze[i][j]
+        if walls['up']:
+            plt.plot([i, i+1], [j+1, j+1], 'b-')
+        if walls['right']:
+            plt.plot([i+1, i+1], [j, j+1], 'b-')
+        if walls['down']:
+            plt.plot([i, i+1], [j, j], 'b-')
+        if walls['left']:
+            plt.plot([i, i], [j, j+1], 'b-')
+    plt.show()
+
+
 
 print(create_maze(6))
