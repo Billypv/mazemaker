@@ -1,10 +1,10 @@
+from hashlib import new
 import numpy as np
 import matplotlib.pyplot as plt
 import random
 
 
 def frontier_generation(random_node, size,frontier,visited_nodes):
-    #adding to frontier
     if(random_node[0] == 0):
         if random_node[1] == 0:
             frontier.add((0,1))
@@ -63,13 +63,19 @@ def create_maze(size):
             maze[new_node[0]][new_node[1]+1]["left"] = True;
         visited_nodes.add(new_node)
         frontier.remove(new_node)
-        frontier = frontier_generation(new_node,size,frontier,visited_nodes)         
-    
-    return maze
+        frontier = frontier_generation(new_node,size,frontier,visited_nodes)  
+    new_maze = dict();     
+    for i in range(size):
+        for j in range(size):
+            new_maze[(i,j)] = [maze[i][j],""]
+    print(new_maze)
+            
+            
+    return new_maze
 
 def print_maze(maze):
     for i, j in maze:
-        walls, _ = maze[i][j]
+        walls, _ = maze[i, j]
         if walls['up']:
             plt.plot([i, i+1], [j+1, j+1], 'b-')
         if walls['right']:
@@ -78,8 +84,8 @@ def print_maze(maze):
             plt.plot([i, i+1], [j, j], 'b-')
         if walls['left']:
             plt.plot([i, i], [j, j+1], 'b-')
-    plt.show()
+    plt.savefig("please_work.png")
 
 
 
-print(create_maze(6))
+print_maze(create_maze(6))
