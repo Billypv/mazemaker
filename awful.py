@@ -47,16 +47,9 @@ def frontier_generation(random_node, size,frontier,visited_nodes):
 
 
 def create_maze(size):
-    maze = [[0]]
-    maze[0] = maze[0] * size
-    maze = maze * size
-    for i in range(size):
-        for j in range(size):
-            maze[i][j] = {"up":False,"down":False,"left":False,"right":False}
+   
+    maze = [[{"up":False,"down":False,"left":False,"right":False} for k in range(size) ] for l in range(size)]
             
-    # maze = [[{"up":False,"down":False,"left":False,"right":False}]]
-    # maze[0] = maze[0] * size
-    # maze = maze * size
     current_node =(random.randint(0,size - 1),random.randint(0,size - 1))
     visited_nodes ={current_node}
     frontier = frontier_generation(current_node,size,set(),visited_nodes)
