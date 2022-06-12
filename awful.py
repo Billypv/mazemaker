@@ -35,32 +35,45 @@ def frontier_generation(random_node, size,frontier,visited_nodes):
             frontier.add((random_node[0]+1,random_node[1]))
             frontier.add((random_node[0],random_node[1]-1))
             frontier.add((random_node[0]-1,random_node[1]))
+    else:
+        frontier.add((random_node[0]+1,random_node[1]))
+        frontier.add((random_node[0],random_node[1]-1))
+        frontier.add((random_node[0]-1,random_node[1]))
+        frontier.add((random_node[0],random_node[1]+1))
+        
     frontier = {tile for tile in frontier if tile not in visited_nodes}
     return frontier     
 
 
 
 def create_maze(size):
-    maze = [[{"up":False,"down":False,"left":False,"right":False}]]
+    maze = [[0]]
     maze[0] = maze[0] * size
     maze = maze * size
+    for i in range(size):
+        for j in range(size):
+            maze[i][j] = {"up":False,"down":False,"left":False,"right":False}
+            
+    # maze = [[{"up":False,"down":False,"left":False,"right":False}]]
+    # maze[0] = maze[0] * size
+    # maze = maze * size
     current_node =(random.randint(0,size - 1),random.randint(0,size - 1))
     visited_nodes ={current_node}
     frontier = frontier_generation(current_node,size,set(),visited_nodes)
     while frontier:
         new_node = random.choice(sorted(frontier))
         if (new_node[0]+1, new_node[1]) in visited_nodes:
-            maze[new_node[0]][new_node[1]]["up"] = True;
-            maze[new_node[0]+1][new_node[1]]["down"] = True;
+            maze[new_node[0]][new_node[1]]["up"] = True
+            maze[new_node[0]+1][new_node[1]]["down"] = True
         elif (new_node[0]-1, new_node[1]) in visited_nodes:
-            maze[new_node[0]][new_node[1]]["down"] = True;
-            maze[new_node[0]-1][new_node[1]]["up"] = True;   
+            maze[new_node[0]][new_node[1]]["down"] = True
+            maze[new_node[0]-1][new_node[1]]["up"] = True
         elif (new_node[0], new_node[1]+1) in visited_nodes: 
-            maze[new_node[0]][new_node[1]]["left"] = True;
-            maze[new_node[0]][new_node[1]+1]["right"] = True; 
-        elif (new_node[0], new_node[1]+1) in visited_nodes:
-            maze[new_node[0]][new_node[1]]["right"] = True;
-            maze[new_node[0]][new_node[1]+1]["left"] = True;
+            maze[new_node[0]][new_node[1]]["right"] = True
+            maze[new_node[0]][new_node[1]+1]["left"] = True
+        elif (new_node[0], new_node[1]-1) in visited_nodes:
+            maze[new_node[0]][new_node[1]]["left"] = True
+            maze[new_node[0]][new_node[1]-1]["right"] = True
         visited_nodes.add(new_node)
         frontier.remove(new_node)
         frontier = frontier_generation(new_node,size,frontier,visited_nodes)  
@@ -68,9 +81,9 @@ def create_maze(size):
     for i in range(size):
         for j in range(size):
             new_maze[(i,j)] = [maze[i][j],""]
+       
     print(new_maze)
-            
-            
+    print(len(new_maze))
     return new_maze
 
 def print_maze(maze):
@@ -84,7 +97,7 @@ def print_maze(maze):
             plt.plot([i, i+1], [j, j], 'b-')
         if walls['left']:
             plt.plot([i, i], [j, j+1], 'b-')
-    plt.savefig("please_work.png")
+    plt.show()
 
 
 
