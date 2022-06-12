@@ -70,27 +70,44 @@ def create_maze(size):
         visited_nodes.add(new_node)
         frontier.remove(new_node)
         frontier = frontier_generation(new_node,size,frontier,visited_nodes)  
-    new_maze = dict();     
-    for i in range(size):
-        for j in range(size):
-            new_maze[(i,j)] = [maze[i][j],""]
-       
-    print(new_maze)
-    return new_maze
+        print(maze)
+        return(maze)
 
 def print_maze(maze):
-    for i, j in maze:
-        walls, _ = maze[i, j]
-        if walls['up']:
-            plt.plot([i, i+1], [j+1, j+1], 'b-')
-        if walls['right']:
-            plt.plot([i+1, i+1], [j, j+1], 'b-')
-        if walls['down']:
-            plt.plot([i, i+1], [j, j], 'b-')
-        if walls['left']:
-            plt.plot([i, i], [j, j+1], 'b-')
-    plt.savefig("please_work.png")
+    counter = 0;
+    maze_string = ""
+    
+    size = len(maze)
+    for row in maze:
+        for i in range(0,2):
+            maze_line = ""
+            for tile in row:
+                if i ==0:
+                    maze_line += "+"
+                    if(tile["up"]):
+                        maze_line+= " "
+                    else:
+                        maze_line+="—"
+                    maze_line += "+"
+                elif i ==1:
+                    if(tile["left"]):
+                        maze_line += " "
+                    else:
+                        maze_line += "|"
+                    maze_line +=" "
+                    if(tile["right"]):
+                        maze_line += " "
+                    else:
+                        maze_line += "|"
+            temp_maze_line =list(maze_line)
+            for i in range(0, len(temp_maze_line) -1):
+                if(temp_maze_line[i] == temp_maze_line[i+1]):
+                    temp_maze_line[i] = ""
+            maze_line =''.join(map(str, temp_maze_line))
+            if(maze_line):
+                maze_string += f"\n{maze_line}"
+    maze_string+=(maze_string[0:2*size + 2])
+    return maze_string    
+            
 
-
-
-print_maze(create_maze(6))
+print(print_maze(create_maze(6)))
