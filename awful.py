@@ -56,11 +56,11 @@ def create_maze(size):
     while frontier:
         new_node = random.choice(sorted(frontier))
         if (new_node[0]+1, new_node[1]) in visited_nodes:
-            maze[new_node[0]][new_node[1]]["up"] = True
-            maze[new_node[0]+1][new_node[1]]["down"] = True
-        elif (new_node[0]-1, new_node[1]) in visited_nodes:
             maze[new_node[0]][new_node[1]]["down"] = True
-            maze[new_node[0]-1][new_node[1]]["up"] = True
+            maze[new_node[0]+1][new_node[1]]["up"] = True
+        elif (new_node[0]-1, new_node[1]) in visited_nodes:
+            maze[new_node[0]][new_node[1]]["up"] = True
+            maze[new_node[0]-1][new_node[1]]["down"] = True
         elif (new_node[0], new_node[1]+1) in visited_nodes: 
             maze[new_node[0]][new_node[1]]["right"] = True
             maze[new_node[0]][new_node[1]+1]["left"] = True
@@ -76,7 +76,6 @@ def create_maze(size):
             new_maze[(i,j)] = [maze[i][j],""]
        
     print(new_maze)
-    print(len(new_maze))
     return new_maze
 
 def print_maze(maze):
@@ -90,7 +89,7 @@ def print_maze(maze):
             plt.plot([i, i+1], [j, j], 'b-')
         if walls['left']:
             plt.plot([i, i], [j, j+1], 'b-')
-    plt.show()
+    plt.savefig("please_work.png")
 
 
 
