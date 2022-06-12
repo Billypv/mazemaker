@@ -70,10 +70,10 @@ def create_maze(size):
         visited_nodes.add(new_node)
         frontier.remove(new_node)
         frontier = frontier_generation(new_node,size,frontier,visited_nodes)  
+    print(maze)
     return(maze)
 
 def print_maze(maze):
-    counter = 0;
     maze_string = ""
     
     size = len(maze)
@@ -87,24 +87,14 @@ def print_maze(maze):
                         maze_line+= " "
                     else:
                         maze_line+="—"
-                    maze_line += "+"
                 elif i ==1:
                     if(tile["left"]):
                         maze_line += " "
                     else:
                         maze_line += "|"
                     maze_line +=" "
-                    if(tile["right"]):
-                        maze_line += " "
-                    else:
-                        maze_line += "|"
-            temp_maze_line =list(maze_line)
-            for i in range(0, len(temp_maze_line) -1):
-                if(temp_maze_line[i] == temp_maze_line[i+1]):
-                    temp_maze_line[i] = ""
-            maze_line =''.join(map(str, temp_maze_line))
-            if(maze_line):
-                maze_string += f"\n{maze_line}"
+            maze_string += f"\n{maze_line}+" if (i == 0) else f"\n{maze_line}|"
+    maze_string
     maze_string+=(maze_string[0:2*size + 2])
     return maze_string    
             
