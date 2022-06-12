@@ -70,8 +70,7 @@ def create_maze(size):
         visited_nodes.add(new_node)
         frontier.remove(new_node)
         frontier = frontier_generation(new_node,size,frontier,visited_nodes)  
-        print(maze)
-        return(maze)
+    return(maze)
 
 def print_maze(maze):
     counter = 0;
