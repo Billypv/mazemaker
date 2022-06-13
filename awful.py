@@ -48,7 +48,7 @@ def frontier_generation(random_node, size,frontier,visited_nodes):
 
 def create_maze(size):
    
-    maze = [[{"up":False,"down":False,"left":False,"right":False} for k in range(size) ] for l in range(size)]
+    maze = [[{"up":False,"down":False,"left":False,"right":False, "start":False, "goal":False, "on_path": False} for k in range(size) ] for l in range(size)]
             
     current_node =(random.randint(0,size - 1),random.randint(0,size - 1))
     visited_nodes ={current_node}
@@ -69,9 +69,16 @@ def create_maze(size):
             maze[new_node[0]][new_node[1]-1]["right"] = True
         visited_nodes.add(new_node)
         frontier.remove(new_node)
-        frontier = frontier_generation(new_node,size,frontier,visited_nodes)  
-    print(maze)
-    return(maze)
+        frontier = frontier_generation(new_node,size,frontier,visited_nodes)
+    start_point = (random.randint(0,size - 1),random.randint(0,size - 1))
+    end_point = (-1,-1)
+    while True:
+        end_point = (random.randint(0,size - 1),random.randint(0,size - 1))
+        if start_point !=end_point:
+            break
+    maze[start_point[0]][start_point[1]]["start"] = True
+    maze[end_point[0]][end_point[1]]["goal"] = True
+    return maze, start_point
 
 def print_maze(maze):
     maze_string = ""
@@ -92,11 +99,45 @@ def print_maze(maze):
                         maze_line += " "
                     else:
                         maze_line += "|"
-                    maze_line +=" "
+                    if tile["start"]:
+                        maze_line +="S"
+                    elif tile["goal"]:
+                        maze_line+="E"
+                    elif tile["on_path"]:
+                        maze_line += "*"
+                    else:
+                        maze_line += " "
             maze_string += f"\n{maze_line}+" if (i == 0) else f"\n{maze_line}|"
     maze_string
     maze_string+=(maze_string[0:2*size + 2])
-    return maze_string    
+    return maze_string
+
+def path_maze(maze, path, visited):
+    if maze [path[-1][0]][path[-1][1]]["goal"]:
+        for tile in path:
+            maze[tile[0]][tile[1]]["on_path"] =True
+        return maze
+    if maze[path[-1][0]][path[-1][1]]["up"] and (path[-1][0]-1,path[-1][1]) not in visited:
+        path.append((path[-1][0]-1,path[-1][1]))
+        visited.add((path[-1][0],path[-1][1]))
+        return path_maze(maze,path,visited)
+    if maze[path[-1][0]][path[-1][1]]["down"] and (path[-1][0]+1,path[-1][1]) not in visited:
+        path.append((path[-1][0]+1,path[-1][1]))
+        visited.add((path[-1][0],path[-1][1]))
+        return path_maze(maze,path,visited)
+    if maze[path[-1][0]][path[-1][1]]["left"] and (path[-1][0],path[-1][1]-1) not in visited:
+        path.append((path[-1][0],path[-1][1]-1))
+        visited.add((path[-1][0],path[-1][1]))
+        return path_maze(maze,path,visited)
+    if maze[path[-1][0]][path[-1][1]]["right"] and (path[-1][0],path[-1][1]+1) not in visited:
+        path.append((path[-1][0],path[-1][1]+1))
+        visited.add((path[-1][0],path[-1][1]))
+        return path_maze(maze,path,visited)
+    return path_maze(maze,path[0:len(path)-1], visited)
+
+        
             
 
-print(print_maze(create_maze(6)))
+maze, start_point = create_maze(6)
+
+print(print_maze(path_maze(maze,[start_point],{start_point})))
