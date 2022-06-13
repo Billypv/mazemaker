@@ -136,8 +136,14 @@ def path_maze(maze, path, visited):
     return path_maze(maze,path[0:len(path)-1], visited)
 
         
-            
-
-maze, start_point = create_maze(6)
-
-print(print_maze(path_maze(maze,[start_point],{start_point})))
+while(True):          
+    print("What size would you like the maze to be?\n")
+    size = int(input())
+    maze, start_point = create_maze(size)
+    print(print_maze(maze))
+    print("Would you like to see the answer? Y/N\n")
+    answer = input()
+    if answer.lower() == 'y':
+        print(print_maze(path_maze(maze,[start_point],{start_point})))
+        
+    
